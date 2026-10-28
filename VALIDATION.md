@@ -14,4 +14,4 @@ Owner: `0xabbefc08711f636404c3dde2d4f96f4f44c6a15a`
 
 Original test: BLOCKED, C2 expected VOID / actual NO. Attempting to seal it failed as required. Clarified test: PASSED with the identical ordered suite, and C2 changed NO → VOID. Sealing the passing digest succeeded; final state SEALED.
 
-Browser QA covers the authored mode switch and case-repair interaction. Live browser readback is checked separately. The real full-consensus write lifecycle used the pinned JS SDK with a temporary account, not an injected extension. Mobile wallets and external wallet signing have not been verified. Local tests use a mocked host and do not substitute for live consensus.
+Browser QA covers the authored mode switch and case-repair interaction. A separate desktop browser read verified full source and loaded the real SEALED record with 3/3 cases matching, without a wallet. The real full-consensus write lifecycle used the pinned JS SDK with a temporary account, not an injected extension. Mobile wallets and external wallet signing have not been verified. Local tests use a mocked host and do not substitute for live consensus.

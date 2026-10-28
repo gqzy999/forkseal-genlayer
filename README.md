@@ -1,5 +1,7 @@
 # ForkSeal
 
+[Open ForkSeal](https://gqzy999.github.io/forkseal-genlayer/) · [Submission details](SUBMISSION.md) · [Live validation](VALIDATION.md)
+
 A regression workbench for binary prediction-market resolution rules. Test hypothetical boundary cases, revise the rules against the same suite, and seal only a test whose actual outcomes match every declared expectation.
 
 ## Use the workbench
