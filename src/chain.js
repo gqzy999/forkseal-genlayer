@@ -1,0 +1,15 @@
+import {createClient,createAccount,generatePrivateKey,abi} from 'genlayer-js';
+import {studionet} from 'genlayer-js/chains';
+import {sha256,toBytes,getAddress} from 'viem';
+import source from '../contracts/forkseal.py?raw';
+export {source};
+export const reader=createClient({chain:studionet});
+export const hash=s=>sha256(toBytes(s)).slice(2);
+export async function verify(address){address=getAddress(address);if(hash(await reader.getContractCode(address))!==hash(source))throw Error('Deployed contract source differs from ForkSeal.');if(await reader.readContract({address,functionName:'get_protocol',args:[],transactionHashVariant:'latest-final'})!=='forkseal-1')throw Error('Protocol mismatch.');return address;}
+export function temporary(){let account=createAccount(generatePrivateKey());return {owner:account.address.toLowerCase(),client:createClient({chain:studionet,account}),temporary:true};}
+export async function connect(){const provider=window.ethereum||window.okxwallet?.ethereum||window.okxwallet;if(!provider?.request)throw Error('Open in a wallet browser or choose a temporary session.');let accounts=await provider.request({method:'eth_requestAccounts'});if(Number(await provider.request({method:'eth_chainId'}))!==61999)await provider.request({method:'wallet_addEthereumChain',params:[{chainId:'0xf22f',chainName:'GenLayer Studionet',nativeCurrency:{name:'GEN',symbol:'GEN',decimals:18},rpcUrls:['https://studio.genlayer.com/api'],blockExplorerUrls:['https://explorer-studio.genlayer.com']}]});return {owner:accounts[0].toLowerCase(),provider,client:createClient({chain:studionet,provider,account:accounts[0]})};}
+export async function check(w){if(!w)throw Error('Connect first.');if(w.temporary)return;if(Number(await w.provider.request({method:'eth_chainId'}))!==61999||(await w.provider.request({method:'eth_accounts'}))[0]?.toLowerCase()!==w.owner)throw Error('Account or network changed. Reconnect on Studionet.');}
+export async function read(address,owner,id){const raw=await reader.readContract({address:getAddress(address),functionName:'get_record',args:[owner,id],transactionHashVariant:'latest-final'});if(!raw)throw Error('Record not found.');return JSON.parse(raw);}
+export const wait=hash=>reader.waitForTransactionReceipt({hash,status:'FINALIZED',interval:3000,retries:12,fullTransaction:true});
+export function success(tx){let l=tx.consensus_data?.leader_receipt;l=Array.isArray(l)?l.find(r=>r.mode==='leader'):l;return [7,'FINALIZED'].includes(tx.status)&&[6,'MAJORITY_AGREE'].includes(tx.result)&&l?.execution_result==='SUCCESS';}
+export function bind(tx,p){if(tx.from_address?.toLowerCase()!==p.from||tx.to_address?.toLowerCase()!==p.address.toLowerCase())throw Error('Receipt sender or target differs.');let b=tx.data?.calldata;b=typeof b==='string'?b:b?.base64;if(!b)throw Error('Receipt calldata missing.');const c=abi.calldata.decode(Uint8Array.from(atob(b),x=>x.charCodeAt(0)));if(!(c instanceof Map)||c.get('method')!==p.method||JSON.stringify(c.get('args')||[])!==JSON.stringify(p.args))throw Error('Receipt method or arguments differ.');}

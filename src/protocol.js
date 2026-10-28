@@ -1,0 +1,2 @@
+export function blocked(rows,cases){return cases.filter((c,i)=>rows[i]?.actual!==c.expected).map(c=>c.id);}
+export function validateCases(raw){const cs=JSON.parse(raw);if(!Array.isArray(cs)||cs.length<2||cs.length>4)throw Error('Use 2–4 cases.');for(const c of cs)if(!c||typeof c.scenario!=='string'||c.scenario.trim().length<30||c.scenario.trim().length>1000||!['YES','NO','VOID'].includes(c.expected))throw Error('Each case needs 30–1000 characters and YES, NO or VOID.');return cs;}

@@ -1,0 +1,267 @@
+{
+  "network": 61999,
+  "owner": "0xabbefc08711f636404c3dde2d4f96f4f44c6a15a",
+  "operator": "One temporary zero-value test signer; synthetic scenarios.",
+  "transactions": [
+    {
+      "label": "deploy",
+      "hash": "0x7f25c31c815c2df5d356d96a4c956c776bac2a7648ac7f5dac5fe35aee037928",
+      "receipt": {
+        "hash": "0x7f25c31c815c2df5d356d96a4c956c776bac2a7648ac7f5dac5fe35aee037928",
+        "from_address": "0xaBBEfC08711F636404c3DDe2D4f96f4F44c6a15a",
+        "to_address": "0xED753895D32bF4504a47f267866B48cb8B40EBCd",
+        "status": 7,
+        "result": 6,
+        "created_at": "2026-10-28T11:27:16.893429+00:00",
+        "leader_only": false,
+        "leader": {
+          "mode": "leader",
+          "vote": null,
+          "execution_result": "SUCCESS",
+          "contract_state_hash": "b3782b1eb544e51cc46769b3e9e5e6cadf037baa0d901fa70722d140300acfe4"
+        }
+      }
+    },
+    {
+      "label": "original test",
+      "hash": "0xf0bac6f2827d0f5a64aa12bb94b675ed9867ab5081f8aac294d4b676be18403b",
+      "receipt": {
+        "hash": "0xf0bac6f2827d0f5a64aa12bb94b675ed9867ab5081f8aac294d4b676be18403b",
+        "from_address": "0xaBBEfC08711F636404c3DDe2D4f96f4F44c6a15a",
+        "to_address": "0xED753895D32bF4504a47f267866B48cb8B40EBCd",
+        "status": 7,
+        "result": 6,
+        "created_at": "2026-10-28T11:27:55.044310+00:00",
+        "leader_only": false,
+        "leader": {
+          "mode": "leader",
+          "vote": null,
+          "execution_result": "SUCCESS",
+          "contract_state_hash": "350ccf2c97d04cf34c87c1eb2cacc13c47b15ff07be6d14b08449b376d61a223"
+        }
+      }
+    },
+    {
+      "label": "blocked seal rejected",
+      "hash": "0x3b2cc97c921a23b23e45fc89daaa137c512a09452b2b3a2504419b4a12e4f7f2",
+      "receipt": {
+        "hash": "0x3b2cc97c921a23b23e45fc89daaa137c512a09452b2b3a2504419b4a12e4f7f2",
+        "from_address": "0xaBBEfC08711F636404c3DDe2D4f96f4F44c6a15a",
+        "to_address": "0xED753895D32bF4504a47f267866B48cb8B40EBCd",
+        "status": 7,
+        "result": 6,
+        "created_at": "2026-10-28T11:28:43.288093+00:00",
+        "leader_only": false,
+        "leader": {
+          "mode": "leader",
+          "vote": null,
+          "execution_result": "ERROR",
+          "contract_state_hash": "350ccf2c97d04cf34c87c1eb2cacc13c47b15ff07be6d14b08449b376d61a223"
+        }
+      }
+    },
+    {
+      "label": "revised same suite",
+      "hash": "0x5d8c069afa0a4b781beba20973425b22e628c168d847d233a4cd4c762008223b",
+      "receipt": {
+        "hash": "0x5d8c069afa0a4b781beba20973425b22e628c168d847d233a4cd4c762008223b",
+        "from_address": "0xaBBEfC08711F636404c3DDe2D4f96f4F44c6a15a",
+        "to_address": "0xED753895D32bF4504a47f267866B48cb8B40EBCd",
+        "status": 7,
+        "result": 6,
+        "created_at": "2026-10-28T11:29:18.209691+00:00",
+        "leader_only": false,
+        "leader": {
+          "mode": "leader",
+          "vote": null,
+          "execution_result": "SUCCESS",
+          "contract_state_hash": "9cde1ff8d80f475c681348f1e5a01b48e510555c156da2503efcda6f03168c44"
+        }
+      }
+    },
+    {
+      "label": "seal passing test",
+      "hash": "0x8864c99da5b00ec18f6e03736ec40cf48d5367c5541a5e1ca98bab7e0d53e15e",
+      "receipt": {
+        "hash": "0x8864c99da5b00ec18f6e03736ec40cf48d5367c5541a5e1ca98bab7e0d53e15e",
+        "from_address": "0xaBBEfC08711F636404c3DDe2D4f96f4F44c6a15a",
+        "to_address": "0xED753895D32bF4504a47f267866B48cb8B40EBCd",
+        "status": 7,
+        "result": 6,
+        "created_at": "2026-10-28T11:30:06.759107+00:00",
+        "leader_only": false,
+        "leader": {
+          "mode": "leader",
+          "vote": null,
+          "execution_result": "SUCCESS",
+          "contract_state_hash": "2383cc64f860a81d7f14e24f690f0a13234e00b5e00079c437596ea4fbaa6ada"
+        }
+      }
+    }
+  ],
+  "records": [
+    {
+      "cases": [
+        {
+          "expected": "YES",
+          "id": "C1",
+          "scenario": "A final 2027 annual report is downloadable on the official website on 20 March 2028 and remains there through 31 March 2028. The report is never cancelled."
+        },
+        {
+          "expected": "VOID",
+          "id": "C2",
+          "scenario": "The observatory officially cancels the 2027 annual report on 1 March 2028. No draft or final report is ever published, including by the deadline."
+        },
+        {
+          "expected": "NO",
+          "id": "C3",
+          "scenario": "Only a document explicitly labelled draft is posted by the deadline. No final report is downloadable by the deadline. The report is not cancelled."
+        }
+      ],
+      "changes": [],
+      "digest": "e8a2681870d3f149abe9480426fb6e2bac733b0ce2bd411bfb72c144b68267e8",
+      "failed": [
+        "C2"
+      ],
+      "findings": [
+        {
+          "actual": "YES",
+          "id": "C1",
+          "quote": "Resolve YES if Northstar Observatory publishes its 2027 annual report by 31 March 2028 at 23:59 UTC.",
+          "reason": "A final 2027 annual report is downloadable from the official website before the stated deadline, which uniquely satisfies the YES rule."
+        },
+        {
+          "actual": "NO",
+          "id": "C2",
+          "quote": "Otherwise resolve NO.",
+          "reason": "No report is published by the deadline, so the YES condition fails and the explicit otherwise rule requires NO; no void rule is provided."
+        },
+        {
+          "actual": "NO",
+          "id": "C3",
+          "quote": "Resolve YES if Northstar Observatory publishes its 2027 annual report by 31 March 2028 at 23:59 UTC. Otherwise resolve NO.",
+          "reason": "Only a draft is posted and no final report is downloadable by the deadline, so the YES condition fails and the otherwise rule requires NO."
+        }
+      ],
+      "id": "original",
+      "owner": "0xabbefc08711f636404c3dde2d4f96f4f44c6a15a",
+      "parent_id": "",
+      "protocol": "forkseal-1",
+      "rules": "Resolve YES if Northstar Observatory publishes its 2027 annual report by 31 March 2028 at 23:59 UTC. Otherwise resolve NO. Use the observatory official website as the resolution source.",
+      "state": "BLOCKED",
+      "title": "Will Northstar Observatory publish its 2027 annual report by 31 March?"
+    },
+    {
+      "cases": [
+        {
+          "expected": "YES",
+          "id": "C1",
+          "scenario": "A final 2027 annual report is downloadable on the official website on 20 March 2028 and remains there through 31 March 2028. The report is never cancelled."
+        },
+        {
+          "expected": "VOID",
+          "id": "C2",
+          "scenario": "The observatory officially cancels the 2027 annual report on 1 March 2028. No draft or final report is ever published, including by the deadline."
+        },
+        {
+          "expected": "NO",
+          "id": "C3",
+          "scenario": "Only a document explicitly labelled draft is posted by the deadline. No final report is downloadable by the deadline. The report is not cancelled."
+        }
+      ],
+      "changes": [
+        {
+          "after": "VOID",
+          "before": "NO",
+          "id": "C2"
+        }
+      ],
+      "digest": "408844a7a869f81e5627a52223f0f63f644de1eae0fce125924bed4bef804804",
+      "failed": [],
+      "findings": [
+        {
+          "actual": "YES",
+          "id": "C1",
+          "quote": "Resolve YES if Northstar Observatory publishes its 2027 annual report by 31 March 2028 at 23:59 UTC.",
+          "reason": "Scenario states a final 2027 annual report is downloadable on the official website on 20 March 2028, which is before the deadline, and it is not cancelled."
+        },
+        {
+          "actual": "VOID",
+          "id": "C2",
+          "quote": "If the observatory officially cancels the 2027 annual report before the deadline, resolve VOID regardless of other conditions.",
+          "reason": "The scenario explicitly says the observatory officially cancels the 2027 annual report on 1 March 2028, before the deadline, which directly triggers VOID."
+        },
+        {
+          "actual": "NO",
+          "id": "C3",
+          "quote": "An explicitly labelled draft is not publication. Publication means a final report downloadable on the official website by the deadline; later removal does not change the result.",
+          "reason": "By the deadline, only an explicitly labelled draft is posted and no final report is downloadable, so the publication condition for YES is not met and there is no cancellation rule to make it VOID."
+        }
+      ],
+      "id": "clarified",
+      "owner": "0xabbefc08711f636404c3dde2d4f96f4f44c6a15a",
+      "parent_id": "original",
+      "protocol": "forkseal-1",
+      "rules": "Resolve YES if Northstar Observatory publishes its 2027 annual report by 31 March 2028 at 23:59 UTC. Otherwise resolve NO. Use the observatory official website as the resolution source. If the observatory officially cancels the 2027 annual report before the deadline, resolve VOID regardless of other conditions. An explicitly labelled draft is not publication. Publication means a final report downloadable on the official website by the deadline; later removal does not change the result.",
+      "state": "PASSED",
+      "title": "Will Northstar Observatory publish its 2027 annual report by 31 March?"
+    },
+    {
+      "cases": [
+        {
+          "expected": "YES",
+          "id": "C1",
+          "scenario": "A final 2027 annual report is downloadable on the official website on 20 March 2028 and remains there through 31 March 2028. The report is never cancelled."
+        },
+        {
+          "expected": "VOID",
+          "id": "C2",
+          "scenario": "The observatory officially cancels the 2027 annual report on 1 March 2028. No draft or final report is ever published, including by the deadline."
+        },
+        {
+          "expected": "NO",
+          "id": "C3",
+          "scenario": "Only a document explicitly labelled draft is posted by the deadline. No final report is downloadable by the deadline. The report is not cancelled."
+        }
+      ],
+      "changes": [
+        {
+          "after": "VOID",
+          "before": "NO",
+          "id": "C2"
+        }
+      ],
+      "digest": "408844a7a869f81e5627a52223f0f63f644de1eae0fce125924bed4bef804804",
+      "failed": [],
+      "findings": [
+        {
+          "actual": "YES",
+          "id": "C1",
+          "quote": "Resolve YES if Northstar Observatory publishes its 2027 annual report by 31 March 2028 at 23:59 UTC.",
+          "reason": "Scenario states a final 2027 annual report is downloadable on the official website on 20 March 2028, which is before the deadline, and it is not cancelled."
+        },
+        {
+          "actual": "VOID",
+          "id": "C2",
+          "quote": "If the observatory officially cancels the 2027 annual report before the deadline, resolve VOID regardless of other conditions.",
+          "reason": "The scenario explicitly says the observatory officially cancels the 2027 annual report on 1 March 2028, before the deadline, which directly triggers VOID."
+        },
+        {
+          "actual": "NO",
+          "id": "C3",
+          "quote": "An explicitly labelled draft is not publication. Publication means a final report downloadable on the official website by the deadline; later removal does not change the result.",
+          "reason": "By the deadline, only an explicitly labelled draft is posted and no final report is downloadable, so the publication condition for YES is not met and there is no cancellation rule to make it VOID."
+        }
+      ],
+      "id": "clarified",
+      "owner": "0xabbefc08711f636404c3dde2d4f96f4f44c6a15a",
+      "parent_id": "original",
+      "protocol": "forkseal-1",
+      "rules": "Resolve YES if Northstar Observatory publishes its 2027 annual report by 31 March 2028 at 23:59 UTC. Otherwise resolve NO. Use the observatory official website as the resolution source. If the observatory officially cancels the 2027 annual report before the deadline, resolve VOID regardless of other conditions. An explicitly labelled draft is not publication. Publication means a final report downloadable on the official website by the deadline; later removal does not change the result.",
+      "state": "SEALED",
+      "title": "Will Northstar Observatory publish its 2027 annual report by 31 March?"
+    }
+  ],
+  "address": "0xED753895D32bF4504a47f267866B48cb8B40EBCd",
+  "receipt_note": "Compact receipt extract; full original transactions remain queryable using their hashes. Signed inputs and finalized records are retained below."
+}
