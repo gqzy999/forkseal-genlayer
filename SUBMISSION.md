@@ -20,6 +20,6 @@ Creators can test cancellation, postponement, draft publication, source priority
 
 ## Scope
 
-A complete application and its Intelligent Contract live in this single Projects repository. No separate Intelligent Contracts submission is intended. Hypothetical scenario facts and signed rules are the inputs; no live event verification, trading, prices, escrow or payments are claimed.
+ForkSeal includes a working browser application and its complete Intelligent Contract. Hypothetical scenario facts and signed rules are the inputs. The application tests written rules; it does not verify live events, operate a trading market, hold funds or execute payments.
 
 Logo: `public/forkseal-logo-1024.png` (1024×1024 PNG).
