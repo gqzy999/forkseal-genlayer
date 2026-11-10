@@ -50,9 +50,12 @@ Only confirmed finalized execution errors or majority disagreement release a fai
 | Method | Kind | Arguments |
 | --- | --- | --- |
 | `test_rules` | write | `ident, title, rules, cases_json, parent_id` |
+| `test_market` | write | `ident, source_url, title, rules, cases_json, parent_id` |
 | `seal` | write | `ident, digest` |
 | `get_record` | view | `owner, ident` |
 | `get_protocol` | view | none |
+
+`test_market` (forkseal-2) imports rules from a real resolved prediction market. The contract fetches `source_url` inside consensus — only `https://gamma-api.polymarket.com/markets/` and `https://polymarket.com/event/` are allowed — and deterministic code requires the submitted rules to appear verbatim in the fetched source (the decoded JSON `description` field, or the raw body for other pages). A fetch failure or mismatch fails the transaction and no record is created. The published market outcome is never sent to the model. Records gain `source_url`, `source_verified` and `source_sha256` fields; VOID covers an explicit void/refund/cancel rule or a 50-50 split rule.
 
 IDs are scoped to the signer. Tests are atomic and immutable. Children can reference only the signer's existing parent. A revision may correct a blocked test; it cannot erase its parent. An unlinked test is explicitly a new suite and carries no regression continuity. There is no claim of independent author identity or exhaustive case coverage.
 
@@ -60,12 +63,18 @@ IDs are scoped to the signer. Tests are atomic and immutable. Children can refer
 
 ## Validation
 
-11 mocked-host contract tests cover ownership, immutability, expected-answer withholding, exact-suite revisions, digest checks, ambiguity, rejected evidence and validator disagreement. Four frontend logic tests cover case validation and mismatch gates. These are local tests, separate from real validator consensus. See `evidence/studionet.json` for the live run and `VALIDATION.md` for its result and boundaries.
+18 mocked-host contract tests cover ownership, immutability, expected-answer withholding, exact-suite revisions, digest checks, ambiguity, rejected evidence and validator disagreement, plus the market source check (verbatim rules, fetch failure, bad host, wrong expected blocks, outcome never in the prompt, 50-50 in the market prompt). Ten frontend logic tests cover case validation, mismatch gates and the market source helpers. These are local tests, separate from real validator consensus. See `evidence/calibration.json` for the live run and `VALIDATION.md` for its result and boundaries. `genvm-lint validate contracts/forkseal.py` passes (5 methods: 2 view, 3 write).
+
+## Resolved-market calibration (forkseal-2)
+
+`test_market` calibrates rules against real resolved markets. The published calibration imported "Bitcoin above $100,000 on December 20?" (Polymarket 515539, resolved NO) and "Aspinall vs. Gane" (Polymarket 639337, resolved 50-50): both sealed with all mirrored scenarios matching the real resolutions. A test with the wrong real outcome written as expected was BLOCKED, and tampered rules plus a broken source URL were rejected with no record. See `REVIEWER.md` and `evidence/EXPECTED.md`.
 
 The optional `scripts/verify-live.mjs` is a development verification utility. Running it creates a new temporary test account and deployment; do not rerun merely to read an existing example. It records hashes before polling and never exports keys.
+
+`scripts/verify-calibration.mjs` runs the forkseal-2 calibration evidence flow (new deployment, 13 pre-registered transactions, two temporary wallets); `scripts/verify-evidence.mjs` re-reads all of it live with no wallet and no transactions. `contracts/market_probe.py` is the minimal STEP 1 probe contract that proved consensus can fetch the Gamma API before the milestone was built.
 
 MIT licensed.
 
 ## Published test
 
-Contract: `0xED753895D32bF4504a47f267866B48cb8B40EBCd`. Record owner: `0xabbefc08711f636404c3dde2d4f96f4f44c6a15a`, ID `clarified`. Choose **Live on GenLayer → Read published test** to read the SEALED record without a wallet. The original record `original` remains BLOCKED.
+Contract: `0x0FB6D10F4A2319aD698179c7a7028081A44C466A` (forkseal-2). Record owner: `0x15daa82431f05d5184ba4e9c245a02ce39189d98`, ID `btc-dec20`. Choose **Live on GenLayer → Read published test** to read the SEALED record without a wallet — the Bitcoin market calibration, all 4 mirrored scenarios matching the real NO resolution. The v1 contract `0xED753895D32bF4504a47f267866B48cb8B40EBCd` (record owner `0xabbefc08711f636404c3dde2d4f96f4f44c6a15a`, ID `clarified`) is untouched and still SEALED.

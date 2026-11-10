@@ -5,9 +5,14 @@ class Return:
 class Store(dict):
  @classmethod
  def __class_getitem__(cls,x): return cls
-G=types.SimpleNamespace(Contract=object,public=types.SimpleNamespace(write=lambda f:f,view=lambda f:f),message=types.SimpleNamespace(sender_address='0x'+'1'*40),vm=types.SimpleNamespace(UserError=E,Return=Return),nondet=types.SimpleNamespace())
+G=types.SimpleNamespace(Contract=object,public=types.SimpleNamespace(write=lambda f:f,view=lambda f:f),message=types.SimpleNamespace(sender_address='0x'+'1'*40),vm=types.SimpleNamespace(UserError=E,Return=Return),nondet=types.SimpleNamespace(web=types.SimpleNamespace()))
 fake=types.ModuleType('genlayer');fake.__all__=['gl','TreeMap'];fake.gl=G;fake.TreeMap=Store;sys.modules['genlayer']=fake
 spec=importlib.util.spec_from_file_location('forkseal','contracts/forkseal.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+MARKET_URL='https://gamma-api.polymarket.com/markets/515539'
+MARKET_RULE='Resolve YES if the Binance BTCUSDT 1-minute candle for 20 Dec 12:00 ET closes at 100,000.01 or higher. Otherwise resolve NO. Only Binance counts as the source.'
+MARKET_CASES=[{'scenario':'The Binance BTCUSDT 1-minute candle for 20 Dec 12:00 ET closed at 96,548.00, below the threshold.','expected':'NO'},{'scenario':'The Binance BTCUSDT 1-minute candle for 20 Dec 12:00 ET closed at 100,214.55, above the threshold.','expected':'YES'}]
+def market_body(rule=MARKET_RULE):
+ return json.dumps({'question':'Bitcoin above $100,000 on December 20?','description':rule,'outcomePrices':['0','1']})
 RULE='Resolve YES if the report is published by March. Otherwise resolve NO. If cancelled, resolve VOID.'
 CASES=[{'scenario':'The final report is published on the official website on March 1.','expected':'YES'},{'scenario':'The report is officially cancelled and never published by March.','expected':'VOID'}]
 class Tests(unittest.TestCase):
@@ -51,4 +56,43 @@ class Tests(unittest.TestCase):
   G.vm.run_nondet_unsafe=run
   with self.assertRaises(E):self.run_test()
   self.assertEqual(len(self.c.records),0)
+ def market_fetch(self, body=market_body(), status=200):
+  class Resp:
+   def __init__(self, s, b): self.status=s; self.body=b
+  G.nondet.web.request = lambda url, method='GET': Resp(status, body)
+ def run_market(self, i='mkt', url=MARKET_URL, rule=MARKET_RULE, cs=MARKET_CASES, parent=''):
+  return json.loads(self.c.test_market(i, url, 'Bitcoin above $100,000 on December 20?', rule, json.dumps(cs), parent))
+ def test_market_pass_seal(self):
+  self.answers=['NO','YES']; self.market_fetch()
+  r=self.run_market(); self.assertEqual(r['state'],'PASSED')
+  self.assertEqual(r['source_url'],MARKET_URL); self.assertTrue(r['source_verified'])
+  import hashlib; self.assertEqual(r['source_sha256'],hashlib.sha256(MARKET_RULE.encode()).hexdigest())
+  self.assertEqual(r['protocol'],'forkseal-2')
+  self.assertEqual(json.loads(self.c.seal('mkt',r['digest']))['state'],'SEALED')
+ def test_market_tampered_rules_rejected(self):
+  self.answers=['NO','YES']; self.market_fetch(market_body('Resolve YES if the price closes at 90,000.00 or higher. Otherwise resolve NO.'))
+  with self.assertRaises(E): self.run_market()
+  self.assertEqual(len(self.c.records),0)
+ def test_market_fetch_failure_rejected(self):
+  def boom(url, method='GET'): raise E('network down')
+  G.nondet.web.request=boom
+  with self.assertRaises(E): self.run_market()
+  self.assertEqual(len(self.c.records),0)
+ def test_market_bad_host_rejected(self):
+  called=[]
+  G.nondet.web.request=lambda url, method='GET': called.append(url) or (_ for _ in ()).throw(E('must not fetch'))
+  with self.assertRaises(E): self.run_market(url='https://example.com/markets/1')
+  self.assertEqual(called,[])
+ def test_market_wrong_expected_blocks(self):
+  self.answers=['NO','YES']; self.market_fetch()
+  cs=[dict(c) for c in MARKET_CASES]; cs[0]['expected']='YES'
+  r=self.run_market(cs=cs); self.assertEqual(r['state'],'BLOCKED'); self.assertEqual(r['failed'],['C1'])
+  with self.assertRaises(E): self.c.seal('mkt',r['digest'])
+ def test_market_outcome_not_in_prompt(self):
+  self.answers=['NO','YES']; self.market_fetch(); self.run_market()
+  self.assertNotIn('outcomePrices',self.prompts[0]); self.assertNotIn('"0","1"',self.prompts[0])
+  self.assertNotIn('"expected"',self.prompts[0])
+  self.assertIn('50-50',self.prompts[0])
+ def test_rules_record_has_empty_source_fields(self):
+  r=self.run_test(); self.assertEqual(r['source_url'],''); self.assertFalse(r['source_verified']); self.assertEqual(r['source_sha256'],'')
 if __name__=='__main__': unittest.main()
